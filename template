@@ -1,0 +1,27 @@
+/*
+ID: manubha1
+PROG: milk3
+LANG: C++
+*/
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <map>
+#include <set>
+#include <deque>
+#include <algorithm>
+#include <math.h>
+
+using namespace std;
+
+
+int main(){
+		
+	ifstream fin(".in");
+	ofstream fout(".out");
+	
+
+
+}
