@@ -52,20 +52,83 @@ bool isPrime (int num)
     }
 }
 
+int reverseNumber(int num){
+    int rev=0;
+    while(num>0){
+        rev = 10*rev + (num%10);
+        num = num/10;
+    }
+    return rev;
+}
+
+int genPalindrom(int num, bool k){
+    int len = length(num);
+    int pal;
+    if(k){
+        pal = num*pow(10,len) + reverseNumber(num);
+    }
+    else{
+        int k = num/10;
+        pal = num*pow(10,len-1)+ reverseNumber(k);
+    }
+    return pal;
+}
+
 
 int main(){
 		
 	ifstream fin("pprime.in");
 	ofstream fout("pprime.out");
 
-	int a,b,c,d;
+	int a,b,ma,mi,tmp;
 	fin >> a >> b;
 
-	c = a/pow(10,max((length(a)/2)-(length(a)%2),1));
-	d = b/pow(10,(length(b)/2));
+    int lenA = length(a);
+    int lenB = length(b);
+    vector<int> v;
+
+    if(lenB%2==1){
+       tmp = b;
+    }
+    else{
+        tmp = pow(10,lenB-1) -1 ;
+
+    }
+    ma = tmp/(pow(10,(length(tmp)/2)));
 
 
-	cout << c << "  " << d<< endl;
+    if(lenA%2==1){
+        tmp = pow(10,lenA-1) -1;
+    }
+    else{
+        tmp = a;
+    }
+    mi = tmp / (pow(10,(length(tmp)/2)));
+    
+
+    for(int i=mi;i<=ma ;i++){
+        tmp = genPalindrom(i,false);
+
+        if(tmp>=a && tmp <=b){
+            if(isPrime(tmp)){
+                v.push_back(tmp);
+            }
+        }
+        tmp = genPalindrom(i,true);
+        if(tmp>=a && tmp <=b){
+            if(isPrime(tmp)){
+                v.push_back(tmp);
+            }
+        }
+
+    }
+
+    sort(v.begin(),v.end());
+
+    for(tmp = 0 ;tmp<v.size();tmp++){
+        fout << v[tmp] << endl;
+    }
+	
 	 
 	
 
