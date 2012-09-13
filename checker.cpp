@@ -22,6 +22,9 @@ int sizeOfBoard;
 int noOfSolutions=0;
 int printTime = 3;
 int acol[13];
+int nediag[25];
+int swdiag[25];
+
 ofstream fout;
 
 
@@ -120,6 +123,24 @@ void printSolution(){
 }
 
 
+
+void markdia(int x, int y){
+	nediag[12+y-x] = 1;
+	swdiag[y+x] = 1;
+}
+
+void unmarkdia(int x, int y){
+	nediag[12+y-x] = 0;
+	swdiag[y+x] = 0;
+}
+
+
+bool check1(int x , int y){
+	if(nediag[12+y-x]==0 && swdiag[x+y]==0){
+		return true;
+	}
+	return false;
+}
 void solve(int x){
 	if(x == sizeOfBoard){
 		if(printTime > 0){
@@ -133,13 +154,13 @@ void solve(int x){
 		
 		for(int y=0;y<sizeOfBoard;y++){
 			if(acol[y]==0){
-				if(board[x][y]==0){
+				if(check1(x,y)){
 					acol[y]=1;
-					place(x,y);
+					markdia(x,y);
 					columns[x] = y;
 					solve(x+1);
 					acol[y]=0; 
-					unplace(x,y);
+					unmarkdia(x,y);
 				}
 			}
 		}
@@ -156,15 +177,22 @@ int main(){
 	fout.open("checker.out");
 	
 	fin >> sizeOfBoard;
-
+	nediag[12]=0;
+	swdiag[12]=0;
 	for(int i=0;i<sizeOfBoard;i++){
 		columns[i]=0;
 		acol[i]=0;
-		for (int j = 0; j < sizeOfBoard; j++)
-		{
-			board[i][j]=0;
-		}
+		// for (int j = 0; j < sizeOfBoard; j++)
+		// {
+		// 	board[i][j]=0;
+		// }
+		nediag[12+i]=0;
+		nediag[12-i]=0;
+		swdiag[12+i]=0;
+		swdiag[12-i]=0;
 	}
+
+
 	solve(0);
 	fout << noOfSolutions << endl;
 	return 0;
