@@ -1,0 +1,125 @@
+int n;
+int store[1000];
+int co[3];
+map< int, vector<int> > o;
+typedef vector<int> vec;
+int no1;
+
+void swap1(int tmp, int index){
+	// if(tmp==3 && index ==3){
+	// 	cout << "debugging" << endl;
+	// }
+	if(tmp==2 || (tmp==3 && co[0]>0)){
+
+		int pos = o[0].front();
+		int tmp2=0,tmp3=0;
+		bool f2=false;
+		for(int i=0;i<no1;i++){
+			if(store[i]==2){
+				tmp2=i;
+				f2=true;
+				break;
+			}
+			else if(store[i]==3){
+				tmp2=i;
+			}
+		}
+
+		store[pos] = store[tmp2];
+		store[tmp2] = 1;
+
+		o[0][0]=o[0].back();
+		o[0].pop_back();
+		sort(o[0].begin(),o[0].end());
+
+		if(f2){
+			tmp3=2;
+		}
+		else{
+			tmp3=3;
+		}
+
+		co[0]--;
+		o[tmp3-1][0]=tmp2;
+		sort(o[tmp3-1].begin(), o[tmp3-1].end());
+		// int pos = o[0].back();
+		
+		// o[0].pop_back();
+		// //sort(o[0].begin(),o[0].end());
+		// o[tmp-1][0] = pos;
+		// sort(o[tmp-1].begin(),o[tmp-1].end());
+		// store[pos]=tmp;
+		// store[index]=1;
+		// co[0]--;
+
+	}
+	else{
+
+		int pos = o[1].back();
+		// cout << pos << endl;
+		// o[1][0] = o[1].back();
+		o[1].pop_back();
+		// sort(o[1].begin(),o[1].end());
+		o[tmp-1][0] = pos;
+		sort(o[tmp-1].begin(),o[tmp-1].end());
+		store[pos]=tmp;
+		store[index]=2;
+		co[1]--;
+	}
+}
+
+void print(){
+	for(int i=0;i<n;i++){
+		cout << store[i] ;
+	}
+
+	cout << endl;
+}
+
+int main(){
+		
+	ifstream fin("sort3.in");
+	ofstream fout("sort3.out");
+
+	for(int i=0;i<2;i++){
+		co[i]=0;
+		o[i]= vec();
+	}
+	
+	fin >> n;
+	int tmp;
+	for (int i=0;i<n;i++){
+		fin>>tmp;
+		co[tmp-1]=co[tmp-1]+1;
+		o[tmp-1].push_back(i);
+		store[i]=tmp;
+	}
+	no1 = co[0];
+	int ans = 0;
+
+	for(int i=0;i<n;i++){
+		tmp = store[i];
+		if(tmp==1 || (tmp==2 && co[0]==0) || (tmp ==3 && co[0]==0 && co[1]==0)) {
+			cout << tmp << "  " << co[0] << endl;
+			co[tmp-1]--;
+			o[tmp-1][0] = o[tmp-1].back();
+			o[tmp-1].pop_back();
+			sort(o[tmp-1].begin(),o[tmp-1].end());
+			// print();
+			continue;
+		}
+		else {
+			cout << tmp << endl;
+			cout << tmp <<"  "<< i << endl;
+			swap1(tmp,i);
+			// if (tmp==3 && i==3){print();return 0;}
+			ans++;
+			print();
+			// cout << " manu" << endl;
+		}
+		
+	}
+	fout << ans << endl;
+	//start the menace.
+
+}
