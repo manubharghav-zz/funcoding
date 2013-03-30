@@ -40,6 +40,7 @@ bool ins(int n){
 	}
 	return true;
 }
+	
 int backTrack(int n,int ans){
 	ans++;
 	int tmp3 = v.back();
